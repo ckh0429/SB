@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -37,23 +36,19 @@ public class LaunchActivity extends AppCompatActivity {
     private RecyclerView userListRecycleView;
     private static UserListRecycleViewAdapter userListRecycleViewAdapter;
     private static List<GithubUserData> githubUserDataArrayList = new ArrayList<>();
-    private static ProgressDialog progressDialog;
-
+    private ProgressDialog progressDialog;
     public static Handler UIHandler;
 
     private final static ExecutorService service = Executors.newSingleThreadExecutor();
-    private final static OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-
         UIHandler = new Handler(Looper.getMainLooper());
-
-
         initRecycleView();
         getGithubUser();
+        getSupportActionBar().setTitle("Github");
     }
 
     private void initRecycleView() {
@@ -104,21 +99,20 @@ public class LaunchActivity extends AppCompatActivity {
                         .build();
 
                 try {
-                    final Response response = client.newCall(request).execute();
+                    final Response response = MyOkHttpClient.getInstance().newCall(request).execute();
                     final String resStr = response.body().string();
                     Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(List.class, new GithubUserData.EmptyListDeserializer()).create();
                     GithubUserData[] githubUserData = gson.fromJson(resStr, GithubUserData[].class);
 
                     githubUserDataArrayList.addAll(Arrays.asList(githubUserData));
                     SINCE_START = Integer.valueOf(githubUserDataArrayList.get(githubUserDataArrayList.size() - 1).getId());
-
+                    notifyRecycleViewAdapterChange();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
                     }
-                    notifyRecycleViewAdapterChange();
                 }
             }
         });

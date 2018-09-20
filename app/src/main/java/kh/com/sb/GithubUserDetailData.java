@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GithubUserData {
+public class GithubUserDetailData {
     private String login = null;
     private String id = null;
     private String node_id = null;
@@ -31,6 +31,19 @@ public class GithubUserData {
     private String received_events_url = null;
     private String type = null;
     private String site_admin = null;
+    private String name = null;
+    private String company = null;
+    private String blog = null;
+    private String location = null;
+    private String email = null;
+    private String hireable = null;
+    private String bio = null;
+    private String public_repos = null;
+    private String public_gists = null;
+    private String followers = null;
+    private String following = null;
+    private String created_at = null;
+    private String updated_at = null;
 
     public String getLogin() {
         return login;
@@ -102,6 +115,34 @@ public class GithubUserData {
 
     public String getSiteAdmin() {
         return site_admin;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getBlog() {
+        return blog;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getHireable() {
+        return hireable;
+    }
+
+    public String getBio() {
+        return bio;
     }
 
     public static class EmptyListDeserializer implements JsonDeserializer<List<?>> {

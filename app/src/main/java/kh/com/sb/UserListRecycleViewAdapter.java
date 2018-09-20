@@ -2,13 +2,18 @@ package kh.com.sb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.List;
 
@@ -29,12 +34,21 @@ public class UserListRecycleViewAdapter extends RecyclerView.Adapter<UserListRec
     }
 
     @Override
-    public void onBindViewHolder(UserListRecycleViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final UserListRecycleViewAdapter.ViewHolder holder, int position) {
         final GithubUserData githubUserData = this.githubUserDataList.get(position);
 
         GlideApp.with(context)
+                .asBitmap()
                 .load(Uri.parse(githubUserData.getAvatar_url()))
-                .into(holder.imageId);
+                .into(new BitmapImageViewTarget(holder.imageId) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        holder.imageId.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
 
         holder.textId.setText(String.valueOf(githubUserData.getId()));
         holder.textName.setText(githubUserData.getLogin());
@@ -42,6 +56,7 @@ public class UserListRecycleViewAdapter extends RecyclerView.Adapter<UserListRec
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserInfoDetailActivity.class);
+                intent.putExtra("login", githubUserData.getLogin());
                 context.startActivity(intent);
             }
         });
