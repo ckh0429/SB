@@ -1,4 +1,4 @@
-package kh.com.sb;
+package kh.com.sb.controller;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,6 +23,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import kh.com.sb.module.MyOkHttpClient;
+import kh.com.sb.R;
+import kh.com.sb.view.UserListRecycleViewAdapter;
+import kh.com.sb.module.GithubUserData;
+import kh.com.sb.view.DetectScrollToEnd;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;

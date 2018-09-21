@@ -1,0 +1,22 @@
+此專案我設計的架構是 MVC 
+
+導入了一些第三方lib如下
+okHttp, Gson -> 處理 rest api 相關事宜
+Glice -> cache image for imageView display
+easyPermission -> 原本是為了 target api 26 以上需要顯示 runTime permission, 但是後來發現此專案不需要.
+
+主要有兩個 Activity (Controller)
+
+LaunchActivity 跟 UserInfoActivity
+
+UI 顯示就是交由 recycleView 負責,
+
+recycleView 我有實作 loadMore callBack, 所以可以一直往下拉, 讀取下一批 20 筆資料, 我有設定一個 max numner , 避免 load 太多,
+
+recycleView click method, 就是丟一個 intent 裡面傳遞點選 user的 login 資料, 讓 UserInfoActivity 接收並且打 api 得到詳細資料.
+
+開發過程中有遇到 github api exceed limit , 所以特別 cache 起來 並且用 alertDialog 顯示, 其實可以在 coreApplication 攔截所有 uncaugh exception,
+
+但此專案應該不需要這功能, UI 上由於沒有精稿, 所以我就大致上參考 pdf 刻 xml, 有些 icon 直接用內建的, 應該沒有關係？
+
+只要用 android studio open gradle.build 應該就能導入我的專案, 有其他問題請通知我處理, 謝謝.

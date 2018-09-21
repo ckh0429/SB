@@ -1,4 +1,4 @@
-package kh.com.sb;
+package kh.com.sb.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,11 @@ import android.widget.TextView;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.List;
+
+import kh.com.sb.R;
+import kh.com.sb.controller.UserInfoDetailActivity;
+import kh.com.sb.module.GithubUserData;
+import kh.com.sb.module.GlideApp;
 
 
 public class UserListRecycleViewAdapter extends RecyclerView.Adapter<UserListRecycleViewAdapter.ViewHolder> {

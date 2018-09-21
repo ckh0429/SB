@@ -1,4 +1,4 @@
-package kh.com.sb;
+package kh.com.sb.module;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GithubUserDetailData {
+public class GithubUserData {
     private String login = null;
     private String id = null;
     private String node_id = null;
@@ -31,19 +31,6 @@ public class GithubUserDetailData {
     private String received_events_url = null;
     private String type = null;
     private String site_admin = null;
-    private String name = null;
-    private String company = null;
-    private String blog = null;
-    private String location = null;
-    private String email = null;
-    private String hireable = null;
-    private String bio = null;
-    private String public_repos = null;
-    private String public_gists = null;
-    private String followers = null;
-    private String following = null;
-    private String created_at = null;
-    private String updated_at = null;
 
     public String getLogin() {
         return login;
@@ -117,34 +104,6 @@ public class GithubUserDetailData {
         return site_admin;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public String getBlog() {
-        return blog;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getHireable() {
-        return hireable;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
     public static class EmptyListDeserializer implements JsonDeserializer<List<?>> {
         @Override
         public List<?> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
@@ -156,5 +115,32 @@ public class GithubUserDetailData {
                 list.add(context.deserialize(array.get(i), itemType));
             return list;
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            sb.append("[");
+            sb.append(login + "=").append(getLogin());
+            sb.append(",").append(id + "=").append(getId());
+            sb.append(",").append(node_id + "=").append(getNodeID());
+            sb.append(",").append(avatar_url + "=").append(getAvatar_url());
+            sb.append(",").append(gravatar_id + "=").append(getGravatar_id());
+            sb.append(",").append(url + "=").append(getUrl());
+            sb.append(",").append(html_url + "=").append(getHtml_url());
+            sb.append(",").append(followers_url + "=").append(getFollowers_url());
+            sb.append(",").append(following_url + "=").append(getFollowing_url());
+            sb.append(",").append(gists_url + "=").append(getGists_url());
+            sb.append(",").append(starred_url + "=").append(getStarred_url());
+            sb.append(",").append(subscriptions_url + "=").append(getSubscriptions_url());
+            sb.append(",").append(organizations_url + "=").append(getOrganizations_url());
+            sb.append(",").append(repos_url + "=").append(getRepos_url());
+            sb.append(",").append(events_url + "=").append(getEvents_url());
+            sb.append(",").append(received_events_url + "=").append(getReceived_events_url());
+            sb.append("]");
+        } catch (Exception e) {
+        }
+        return sb.toString();
     }
 }

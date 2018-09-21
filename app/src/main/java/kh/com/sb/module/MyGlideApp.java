@@ -1,4 +1,4 @@
-package kh.com.sb;
+package kh.com.sb.module;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;

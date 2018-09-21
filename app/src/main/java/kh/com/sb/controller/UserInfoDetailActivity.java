@@ -1,4 +1,4 @@
-package kh.com.sb;
+package kh.com.sb.controller;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import kh.com.sb.R;
+import kh.com.sb.module.GithubUserDetailData;
+import kh.com.sb.module.GlideApp;
+import kh.com.sb.module.MyOkHttpClient;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
