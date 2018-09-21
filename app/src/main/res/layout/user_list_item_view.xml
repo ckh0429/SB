@@ -3,38 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardview"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    android:padding="6dp">
+    android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="12dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="12dp">
 
         <ImageView
             android:id="@+id/imageId"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_launcher_background" />
 
-        <TextView
-            android:id="@+id/textId"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="123456"
-            app:layout_constraintStart_toEndOf="@+id/imageId" />
+            android:layout_height="50dp"
+            android:gravity="center|left"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+
+            app:layout_constraintStart_toEndOf="@+id/imageId">
 
             <TextView
-                android:id="@+id/textName"
+                android:id="@+id/login_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:text="678910"
-                app:layout_constraintStart_toEndOf="@+id/imageId"
-                app:layout_constraintTop_toBottomOf="@id/textId" />
+                android:textColor="@android:color/black"
+                tools:text="123456" />
 
+            <TextView
+                android:id="@+id/side_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_circle"
+                android:textColor="@android:color/white"
+                android:visibility="gone"
+                tools:text="678910" />
+
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

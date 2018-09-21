@@ -6,18 +6,140 @@
     android:layout_height="match_parent"
     tools:context=".LaunchActivity">
 
-    <ImageView
-        android:id="@+id/imageId"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
-
-    <TextView
-        android:id="@+id/textId"
+    <ProgressBar
+        android:id="@+id/progressBar_cyclic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:text="123456"
-        app:layout_constraintTop_toBottomOf="@+id/imageId" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:minHeight="25dp"
+        android:minWidth="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageId"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar_cyclic" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageId"
+        tools:text="123456" />
+
+    <TextView
+        android:id="@+id/bio"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:paddingTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        tools:text="123456" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@+id/bio">
+
+    </View>
+
+
+    <LinearLayout
+        android:id="@+id/login_all_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/line">
+
+
+        <View
+            android:id="@+id/login_drawable"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:background="@android:drawable/ic_menu_gallery"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/line">
+
+        </View>
+
+        <LinearLayout
+            android:id="@+id/login_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center|start"
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@+id/login_drawable"
+            app:layout_constraintTop_toBottomOf="@+id/line">
+
+            <TextView
+                android:id="@+id/login_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                tools:text="123456" />
+
+            <TextView
+                android:id="@+id/side_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_circle"
+                android:textColor="@android:color/white"
+                android:visibility="gone"
+                tools:text="678910" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:paddingTop="10dp"
+        android:drawableStart="@android:drawable/ic_menu_gallery"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_all_ll"
+        tools:text="123456" />
+
+    <TextView
+        android:id="@+id/blog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:drawableStart="@android:drawable/ic_menu_gallery"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:autoLink="web"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location"
+        tools:text="123456" />
 
 </android.support.constraint.ConstraintLayout>

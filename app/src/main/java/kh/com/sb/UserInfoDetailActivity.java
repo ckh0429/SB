@@ -1,15 +1,16 @@
 package kh.com.sb;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.gson.Gson;
@@ -27,36 +28,42 @@ import okhttp3.Response;
 public class UserInfoDetailActivity extends AppCompatActivity {
 
     private final static ExecutorService service = Executors.newSingleThreadExecutor();
-    private ProgressDialog progressDialog;
     public static Handler UIHandler;
     private static final String GITHUB_URL = "https://api.github.com/users/";
     private ImageView userImageView;
+    private TextView nameText;
+    private TextView bioText;
+    private TextView loginText;
+    private TextView sideAdminText;
+    private TextView locationText;
+    private TextView blogText;
+    private ProgressBar progressBar;
     private String loginID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_detail_view);
         loginID = getIntent().getExtras().getString("login");
-        userImageView = findViewById(R.id.imageId);
-        getSupportActionBar().setTitle("Github user detail");
-        UIHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-            }
-        };
+        UIHandler = new Handler(Looper.getMainLooper());
+        initUI();
         getUserDetailInfo();
     }
 
+    private void initUI() {
+        getSupportActionBar().hide();
+        setContentView(R.layout.user_detail_view);
+        userImageView = findViewById(R.id.imageId);
+        nameText = findViewById(R.id.name);
+        bioText = findViewById(R.id.bio);
+        loginText = findViewById(R.id.login_text);
+        sideAdminText = findViewById(R.id.side_admin);
+        locationText = findViewById(R.id.location);
+        blogText = findViewById(R.id.blog);
+        progressBar = findViewById(R.id.progressBar_cyclic);
+    }
+
     public void getUserDetailInfo() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(UserInfoDetailActivity.this);
-            progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        }
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
-        }
+        progressBar.setVisibility(View.VISIBLE);
         service.submit(new Runnable() {
             @Override
             public void run() {
@@ -77,9 +84,7 @@ public class UserInfoDetailActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
-                    if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
+                    closeProgressBar();
                 }
             }
         });
@@ -93,19 +98,41 @@ public class UserInfoDetailActivity extends AppCompatActivity {
         runOnUI(new Runnable() {
             @Override
             public void run() {
-                GlideApp.with(UserInfoDetailActivity.this)
-                        .asBitmap()
-                        .load(githubUserDetailData.getAvatar_url())
-                        .circleCrop()
-                        .into(new BitmapImageViewTarget(userImageView) {
-                            @Override
-                            protected void setResource(Bitmap resource) {
-                                RoundedBitmapDrawable circularBitmapDrawable =
-                                        RoundedBitmapDrawableFactory.create(getResources(), resource);
-                                circularBitmapDrawable.setCircular(true);
-                                userImageView.setImageDrawable(circularBitmapDrawable);
-                            }
-                        });
+                updateUI(githubUserDetailData);
+            }
+        });
+    }
+
+    private void updateUI(GithubUserDetailData githubUserDetailData) {
+        GlideApp.with(UserInfoDetailActivity.this)
+                .asBitmap()
+                .load(githubUserDetailData.getAvatar_url())
+                .circleCrop()
+                .into(new BitmapImageViewTarget(userImageView) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        userImageView.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
+        nameText.setText(githubUserDetailData.getName());
+        bioText.setText(githubUserDetailData.getBio());
+        loginText.setText(githubUserDetailData.getLogin());
+        if (Boolean.valueOf(githubUserDetailData.getSiteAdmin())) {
+            sideAdminText.setVisibility(View.VISIBLE);
+            sideAdminText.setText("staff");
+        }
+        locationText.setText(githubUserDetailData.getLocation());
+        blogText.setText(githubUserDetailData.getBlog());
+    }
+
+    private void closeProgressBar() {
+        runOnUI(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

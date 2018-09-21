@@ -4,12 +4,16 @@ import okhttp3.OkHttpClient;
 
 public class MyOkHttpClient extends OkHttpClient {
 
-    private static OkHttpClient myOkhttpClient;
+    private static OkHttpClient myOKhttpClient;
+
+    public MyOkHttpClient() {
+        super();
+    }
 
     public static OkHttpClient getInstance() {
-        if (myOkhttpClient == null) {
-            myOkhttpClient = new OkHttpClient();
+        if (myOKhttpClient == null) {
+            myOKhttpClient = new MyOkHttpClient();
         }
-        return myOkhttpClient;
+        return myOKhttpClient;
     }
 }

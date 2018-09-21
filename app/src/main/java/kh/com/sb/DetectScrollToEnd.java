@@ -4,7 +4,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by dev22 on 3/1/17.
  * helper class for detect when recyclerView scroll to bottom and load more data
  */
 public abstract class DetectScrollToEnd extends RecyclerView.OnScrollListener {

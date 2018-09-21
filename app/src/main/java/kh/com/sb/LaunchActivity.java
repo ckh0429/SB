@@ -1,19 +1,22 @@
 package kh.com.sb;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,10 +36,10 @@ public class LaunchActivity extends AppCompatActivity {
     private static int SINCE_START = 1;
     private static final String PAGE_NUM = "20";
 
-    private RecyclerView userListRecycleView;
-    private static UserListRecycleViewAdapter userListRecycleViewAdapter;
-    private static List<GithubUserData> githubUserDataArrayList = new ArrayList<>();
-    private ProgressDialog progressDialog;
+    private TextView displayUsersView;
+    private UserListRecycleViewAdapter userListRecycleViewAdapter;
+    private ProgressBar progressBar;
+    private List<GithubUserData> githubUserDataArrayList = new ArrayList<>();
     public static Handler UIHandler;
 
     private final static ExecutorService service = Executors.newSingleThreadExecutor();
@@ -44,15 +47,23 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
         UIHandler = new Handler(Looper.getMainLooper());
-        initRecycleView();
+        initUI();
         getGithubUser();
-        getSupportActionBar().setTitle("Github");
+    }
+
+    private void initUI() {
+        getSupportActionBar().setTitle(getString(R.string.github_users));
+        getSupportActionBar().setSplitBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.darker_gray)));
+        setContentView(R.layout.activity_launch);
+        progressBar = findViewById(R.id.progressBar_cyclic);
+        displayUsersView = findViewById(R.id.display_users_view);
+        initRecycleView();
     }
 
     private void initRecycleView() {
-        userListRecycleView = findViewById(R.id.recyclerView_index);
+        RecyclerView userListRecycleView = findViewById(R.id.recyclerView_index);
+        userListRecycleView.addItemDecoration(new DividerItemDecoration(this, 0));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         userListRecycleView.setLayoutManager(layoutManager);
@@ -64,21 +75,14 @@ public class LaunchActivity extends AppCompatActivity {
                 if (userListRecycleViewAdapter.getItemCount() >= LIST_ITEM_MAX) {
                     new AlertDialog.Builder(LaunchActivity.this)
                             .setMessage("list item exceed max number")
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
                             }).show();
                 } else {
-                    if (progressDialog == null) {
-                        progressDialog = new ProgressDialog(LaunchActivity.this);
-                        progressDialog.setMessage("Loading...");
-                        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    }
-                    if (!progressDialog.isShowing()) {
-                        progressDialog.show();
-                    }
+                    progressBar.setVisibility(View.VISIBLE);
                     getGithubUser();
                 }
             }
@@ -86,7 +90,6 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public void getGithubUser() {
-
         service.submit(new Runnable() {
             @Override
             public void run() {
@@ -98,22 +101,37 @@ public class LaunchActivity extends AppCompatActivity {
                         .url(builder.toString())
                         .build();
 
+                String resStr = null;
                 try {
                     final Response response = MyOkHttpClient.getInstance().newCall(request).execute();
-                    final String resStr = response.body().string();
+                    resStr = response.body().string();
                     Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(List.class, new GithubUserData.EmptyListDeserializer()).create();
                     GithubUserData[] githubUserData = gson.fromJson(resStr, GithubUserData[].class);
 
                     githubUserDataArrayList.addAll(Arrays.asList(githubUserData));
                     SINCE_START = Integer.valueOf(githubUserDataArrayList.get(githubUserDataArrayList.size() - 1).getId());
                     notifyRecycleViewAdapterChange();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    showErrorMessageDialog(e, resStr);
                 } finally {
-                    if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
+                    closeProgressBar();
                 }
+            }
+        });
+    }
+
+    private void showErrorMessageDialog(final Exception e, final String resStr) {
+        runOnUI(new Runnable() {
+            @Override
+            public void run() {
+                new AlertDialog.Builder(LaunchActivity.this)
+                        .setMessage(e.getMessage() + resStr)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
             }
         });
     }
@@ -127,6 +145,15 @@ public class LaunchActivity extends AppCompatActivity {
             @Override
             public void run() {
                 userListRecycleViewAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void closeProgressBar() {
+        runOnUI(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

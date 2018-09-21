@@ -50,8 +50,14 @@ public class UserListRecycleViewAdapter extends RecyclerView.Adapter<UserListRec
                     }
                 });
 
-        holder.textId.setText(String.valueOf(githubUserData.getId()));
-        holder.textName.setText(githubUserData.getLogin());
+        holder.loginText.setText(String.valueOf(githubUserData.getLogin()));
+        if(Boolean.valueOf(githubUserData.getSiteAdmin())) {
+            holder.sideAdmin.setVisibility(View.VISIBLE);
+            holder.sideAdmin.setText(R.string.staff);
+        } else{
+            holder.sideAdmin.setVisibility(View.GONE);
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,13 +75,13 @@ public class UserListRecycleViewAdapter extends RecyclerView.Adapter<UserListRec
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageId;
-        TextView textId, textName;
+        TextView loginText, sideAdmin;
 
         ViewHolder(View itemView) {
             super(itemView);
             imageId = itemView.findViewById(R.id.imageId);
-            textId = itemView.findViewById(R.id.textId);
-            textName = itemView.findViewById(R.id.textName);
+            loginText = itemView.findViewById(R.id.login_text);
+            sideAdmin = itemView.findViewById(R.id.side_admin);
         }
     }
 }
