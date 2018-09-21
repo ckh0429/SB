@@ -19,4 +19,6 @@ recycleView click method, 就是丟一個 intent 裡面傳遞點選 user的 logi
 
 但此專案應該不需要這功能, UI 上由於沒有精稿, 所以我就大致上參考 pdf 刻 xml, 有些 icon 直接用內建的, 應該沒有關係？
 
+unit test 寫了一個 gson parser 看是否正確, 以及 android test 寫了一個能否判斷 target api > 26.
+
 只要用 android studio open gradle.build 應該就能導入我的專案, 有其他問題請通知我處理, 謝謝.
