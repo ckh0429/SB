@@ -41,6 +41,7 @@ public class UserInfoDetailActivity extends AppCompatActivity {
     private TextView sideAdminText;
     private TextView locationText;
     private TextView blogText;
+    private View closeView;
     private ProgressBar progressBar;
     private String loginID = null;
 
@@ -54,8 +55,8 @@ public class UserInfoDetailActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        getSupportActionBar().hide();
         setContentView(R.layout.user_detail_view);
+        getSupportActionBar().hide();
         userImageView = findViewById(R.id.imageId);
         nameText = findViewById(R.id.name);
         bioText = findViewById(R.id.bio);
@@ -64,6 +65,13 @@ public class UserInfoDetailActivity extends AppCompatActivity {
         locationText = findViewById(R.id.location);
         blogText = findViewById(R.id.blog);
         progressBar = findViewById(R.id.progressBar_cyclic);
+        closeView = findViewById(R.id.close);
+        closeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void getUserDetailInfo() {
@@ -126,7 +134,7 @@ public class UserInfoDetailActivity extends AppCompatActivity {
         loginText.setText(githubUserDetailData.getLogin());
         if (Boolean.valueOf(githubUserDetailData.getSiteAdmin())) {
             sideAdminText.setVisibility(View.VISIBLE);
-            sideAdminText.setText("staff");
+            sideAdminText.setText(R.string.staff);
         }
         locationText.setText(githubUserDetailData.getLocation());
         blogText.setText(githubUserDetailData.getBlog());

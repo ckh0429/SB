@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,11 +22,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import kh.com.sb.module.MyOkHttpClient;
 import kh.com.sb.R;
-import kh.com.sb.view.UserListRecycleViewAdapter;
 import kh.com.sb.module.GithubUserData;
+import kh.com.sb.module.MyOkHttpClient;
 import kh.com.sb.view.DetectScrollToEnd;
+import kh.com.sb.view.UserListRecycleViewAdapter;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -38,10 +37,9 @@ public class LaunchActivity extends AppCompatActivity {
     private static final String SINCE = "since";
     private static final String PER_PAGE = "per_page";
     private static final int LIST_ITEM_MAX = 100;
-    private static int SINCE_START = 1;
+    private static int SINCE_START = 0;
     private static final String PAGE_NUM = "20";
 
-    private TextView displayUsersView;
     private UserListRecycleViewAdapter userListRecycleViewAdapter;
     private ProgressBar progressBar;
     private List<GithubUserData> githubUserDataArrayList = new ArrayList<>();
@@ -53,16 +51,16 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UIHandler = new Handler(Looper.getMainLooper());
+        SINCE_START = 0;
         initUI();
         getGithubUser();
     }
 
     private void initUI() {
+        setContentView(R.layout.activity_launch);
         getSupportActionBar().setTitle(getString(R.string.github_users));
         getSupportActionBar().setSplitBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.darker_gray)));
-        setContentView(R.layout.activity_launch);
         progressBar = findViewById(R.id.progressBar_cyclic);
-        displayUsersView = findViewById(R.id.display_users_view);
         initRecycleView();
     }
 
@@ -79,7 +77,7 @@ public class LaunchActivity extends AppCompatActivity {
             protected void onLoadMore() {
                 if (userListRecycleViewAdapter.getItemCount() >= LIST_ITEM_MAX) {
                     new AlertDialog.Builder(LaunchActivity.this)
-                            .setMessage("list item exceed max number")
+                            .setMessage(R.string.exceed_max)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
