@@ -1,24 +1,25 @@
 此專案我設計的架構是 MVC 
 
-導入了一些第三方lib如下
-okHttp, Gson -> 處理 rest api 相關事宜
-Glice -> cache image for imageView display
-easyPermission -> 原本是為了 target api 26 以上需要顯示 runTime permission, 但是後來發現此專案不需要.
+導入了下面所列出的第三方元件
 
-主要有兩個 Activity (Controller)
+okhttp, Gson -> 處理 rest api 相關事宜
+Glice -> cache image for imageView display
+EasyPermission -> 原本是為了 target api 26 以上需要顯示 runTime permission, 但是後來發現此專案的 internet permission 不需要.
+
+主頁面是兩個 Activity
 
 LaunchActivity 跟 UserInfoActivity
 
-UI 顯示就是交由 recycleView 負責,
+UI 主要就是 recycleView, cardView
 
-recycleView 我有實作 loadMore callBack, 所以可以一直往下拉, 讀取下一批 20 筆資料, 我有設定一個 max numner , 避免 load 太多,
+recycleView 我有實作 loadMore callBack, 所以可以一直下滑動, 滑到最底的時候, 會再讀取下20筆資料, 我有設定一個 max numner, 超過的話會顯示 alertDialog.
 
-recycleView click method, 就是丟一個 intent 裡面傳遞點選 user的 login 資料, 讓 UserInfoActivity 接收並且打 api 得到詳細資料.
+recycleView click method, 就是丟一個 intent 裡面傳遞點選 user 的 login 資料, 讓 UserInfoActivity 接收並且打 api 得到詳細資料.
 
-開發過程中有遇到 github api exceed limit , 所以特別 cache 起來 並且用 alertDialog 顯示, 其實可以在 coreApplication 攔截所有 uncaugh exception,
-
-但此專案應該不需要這功能, UI 上由於沒有精稿, 所以我就大致上參考 pdf 刻 xml, 有些 icon 直接用內建的, 應該沒有關係？
+但此專案應該不需要這功能, UI 上由於沒有精稿, 所以我就大致上參考 pdf 刻 xml, 有些 icon 直接用內建的代表.
 
 unit test 寫了一個 gson parser 看是否正確, 以及 android test 寫了一個能否判斷 target api > 26.
 
-只要用 android studio open gradle.build 應該就能導入我的專案, 有其他問題請通知我處理, 謝謝.
+困難的地方大致上還好, 但是在開發過程中有遇到 github api exceed limit, 那時候還以為哪邊出問題, 後來看 log 才知道原因, 所以特別 cache 起來 並且用 alertDialog 顯示, 其實可以在 coreApplication 攔截所有 uncaugh exception, 
+
+再看需求決定要怎樣處理這些 exception.
